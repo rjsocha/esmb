@@ -59,7 +59,7 @@ then
 fi
 
 function showUsage() {
-	echo "esmb init | set-domain <domain_name> | configure [--force] | showTemplates | checkHostname | join-domain | add-share"
+	echo "esmb init | set-domain <domain_name> | configure [--force] | showTemplates | check-hostname | join-domain | add-share"
 }
 
 function init_me() {
@@ -229,13 +229,23 @@ local _hostname _fqdn _domain
 	_hostname=$(hostname)
 	_domain=$(hostname -d)
 	_fqdn=$(hostname -f)
-	ip1=$(dig $_hostname +short)
-	ip2=$(dig $_fqdn +short)
+	ip1=$(dig -q $_hostname +short)
 	echo "FQDN: $_fqdn"
 	echo "DOMAIN: $_domain"
-	echo "NAME: $_hostname / $ip1"
+	echo "NAME: $_hostname / $ip"
+	if [[ -z $_fqdn ]]
+	then
+		echo "Hostname of this system doesn't resolve to FQDN!"
+		exit 1
+	fi
+	if [[ -z $_domain ]]
+	then
+		echo "Unable to resolve domain name for this host!"
+		exit 1
+	fi
 	ad_domain="$(domainName)"
 	ad_short_domain="$(domainNameShort)"
+	ip2=$(dig -q $_fqdn +short)
 	if [[ $ip1 != $ip2 ]]
 	then
 		echo "IP address mismatch"
@@ -321,7 +331,7 @@ case $cmd in
 		checkHostname
 		init_me
 		;;
-	checkHostname)
+	checkHostname|check-hostname)
 		checkHostname
 		;;
 	configure)
