@@ -1,0 +1,48 @@
+#ESMB
+[global]
+   workgroup = {DOMAIN_SHORT}
+   security = ADS
+   realm = {DOMAIN}
+
+   winbind refresh tickets = Yes
+   vfs objects = acl_xattr
+   map acl inherit = Yes
+   store dos attributes = Yes
+
+   dedicated keytab file = /etc/krb5.keytab
+   kerberos method = secrets and keytab
+
+   winbind use default domain = yes
+
+   #winbind enum users = yes
+   #winbind enum groups = yes
+
+   load printers = no
+   printing = bsd
+   printcap name = /dev/null
+   disable spoolss = yes
+
+   idmap config * : backend = tdb
+   idmap config * : range = 3000-7999
+
+   idmap config {DOMAIN_SHORT} : backend = rid
+   idmap config {DOMAIN_SHORT} : range = 10000-999999
+
+   template shell = /bin/false
+   template homedir = /dev/null
+
+   username map = /etc/samba/administrator.map
+   server string = %h server (Samba)
+   dns proxy = no
+   log file = /var/log/samba/log.%m
+   max log size = 1000
+   panic action = /usr/share/samba/panic-action %d
+   server role = standalone server
+   passdb backend = tdbsam
+   obey pam restrictions = yes
+   unix password sync = no
+   pam password change = no
+   map to guest = bad user
+   usershare max shares = 0
+
+   include = /etc/samba/shares.conf

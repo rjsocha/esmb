@@ -1,0 +1,5 @@
+#ESMB
+[libdefaults]
+    dns_lookup_realm = false
+    dns_lookup_kdc = true
+    default_realm = {DOMAIN}
