@@ -222,6 +222,13 @@ local _check=0 _check1 _check2
 	echo "System configured for $ad_domain / $ad_short_domain domain"
 }
 	
+function show_info_etc_host() {
+	echo "Put this in /etc/hosts:"
+	echo
+	echo "${1} ${2,,}.${3,,} {$2,,}"
+	echo
+}
+
 function checkHostname() {
 local _hostname _fqdn _domain
 	ad_domain="$(domainName)"
@@ -236,36 +243,38 @@ local _hostname _fqdn _domain
 	if [[ -z $_fqdn ]]
 	then
 		echo "Hostname of this system doesn't resolve to FQDN!"
-		echo "Put this in /etc/hosts:"
-		echo "$ip1 $_hostname.$ad_domain $_hostname"
+		show_info_etc_host $ip1 $_hostname $ad_domain
 		exit 1
 	fi
 	if [[ -z $_domain ]]
 	then
 		echo "Unable to resolve domain name for this host!"
-		echo "Put this in /etc/hosts:"
-		echo "$ip1 $_hostname.$ad_domain $_hostname"
+		show_info_etc_host $ip1 $_hostname $ad_domain
 		exit 1
 	fi
 	ip2=$(dig -q $_fqdn +short)
 	if [[ $ip1 != $ip2 ]]
 	then
 		echo "IP address mismatch"
+		show_info_etc_host $ip1 $_hostname $ad_domain
 		exit
 	fi
 	if [[ $ip1 =~ ^127 ]]
 	then
 		echo "Hostname is resolving to 127.x.x.x address!"
+		show_info_etc_host $ip1 $_hostname $ad_domain
 		exit 1
 	fi
 	if [[ $_hostname == $_fqdn ]]
 	then
 		echo "Hostname domain is missing!"
+		show_info_etc_host $ip1 $_hostname $ad_domain
 		exit 1
 	fi
 	if [[ $ad_domain != ${_domain^^} ]]
 	then
 		echo "Hostname domain / AD domain mismatch!"
+		show_info_etc_host $ip1 $_hostname $ad_domain
 		exit 1
 	fi
 }
