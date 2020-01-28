@@ -71,7 +71,7 @@ function init_me() {
 		echo "Samba is already installed... unable to continue!"
 		exit 1
 	fi
-	echo "Instaling required packages..."
+	echo "Installing required packages..."
 	apt-get update -qq
 	DEBIAN_FRONTEND=noninteractive apt-get install -qq acl attr samba samba-dsdb-modules samba-vfs-modules winbind libpam-winbind libnss-winbind libpam-krb5 krb5-config krb5-user dnsutils &>/dev/null
 	systemctl stop smbd winbind nmbd
