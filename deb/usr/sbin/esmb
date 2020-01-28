@@ -227,7 +227,7 @@ local _check=0 _check1 _check2
 function show_info_etc_host() {
 	echo "Put this in /etc/hosts:"
 	echo
-	echo "${1} ${2,,}.${3,,} {$2,,}"
+	echo "${1} ${2,,}.${3,,} ${2,,}"
 	echo
 }
 
@@ -239,9 +239,9 @@ local _hostname _fqdn _domain
 	_domain=$(hostname -d)
 	_fqdn=$(hostname -f)
 	ip1=$(dig -q $_hostname +short)
-	echo "FQDN: $_fqdn"
-	echo "DOMAIN: $_domain"
-	echo "NAME: $_hostname / $ip1"
+	echo "FQDN: ${_fqdn,,}"
+	echo "DOMAIN: ${_domain,,}"
+	echo "NAME: ${_hostname,,} / $ip1"
 	if [[ -z $_fqdn ]]
 	then
 		echo "Hostname of this system doesn't resolve to FQDN!"
@@ -257,7 +257,7 @@ local _hostname _fqdn _domain
 	ip2=$(dig -q $_fqdn +short)
 	if [[ $ip1 != $ip2 ]]
 	then
-		echo "IP address mismatch"
+		echo "IP address mismatch ($ip1 != $ip2)"
 		show_info_etc_host $ip1 $_hostname $ad_domain
 		exit
 	fi
