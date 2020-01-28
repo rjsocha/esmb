@@ -252,13 +252,13 @@ local _hostname _fqdn _domain
 		show_info_etc_host $ip1 $_hostname $ad_domain
 		exit 1
 	fi
-	ip2=$(dig -q $_fqdn +short)
-	if [[ $ip1 != $ip2 ]]
-	then
-		echo "IP address mismatch ($ip1 != $ip2)"
-		show_info_etc_host $ip1 $_hostname $ad_domain
-		exit
-	fi
+	#ip2=$(dig -q $_fqdn +short)
+	#if [[ $ip1 != $ip2 ]]
+	#then
+	#	echo "IP address mismatch ($ip1 != $ip2)"
+	#	show_info_etc_host $ip1 $_hostname $ad_domain
+	#	exit
+	# fi
 	if [[ $ip1 =~ ^127 ]]
 	then
 		echo "Hostname is resolving to 127.x.x.x address!"
