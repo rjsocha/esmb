@@ -15,7 +15,7 @@ set -e
 _HOME=$(eval echo '~')
 CONFIG_DIR="${ESMB_CONFIG_DIR:-${_HOME}/.config/esmb}"
 function fatal_error() {
-  printf $@
+  printf "$@\n"
   exit 1
 }
 
@@ -71,19 +71,42 @@ function showUsage() {
 }
 
 function init_me() {
-  if [[ -f $CONFIG_DIR/init ]]
+local _quiet=0 _force=0 _packages
+  while [[ $# -gt 0 ]]
+  do
+    case "$1"  in
+      -q|--quiet)
+        _quiet=1
+        ;;
+       -f|--force)
+        _force=1
+        ;;
+    esac
+    shift
+  done
+  if [[ -f $CONFIG_DIR/init ]] && [[ $_force -ne 1 ]]
   then
     echo "This system is already initialized... aborting"
     exit 1
   fi
   if [[ -x /usr/sbin/smbd ]] || command -v smbd &>/dev/null
   then
-    echo "Samba is already installed... unable to continue!"
-    exit 1
+    if [[ $_force -ne 1 ]]
+    then
+      echo "Samba is already installed... unable to continue!"
+      exit 1
+    fi
   fi
   echo "Installing required packages..."
-  apt-get update 
-  DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y acl attr samba samba-dsdb-modules samba-vfs-modules winbind libpam-winbind libnss-winbind krb5-config krb5-user 
+  _packages="acl attr samba samba-dsdb-modules samba-vfs-modules winbind libpam-winbind libnss-winbind krb5-config krb5-user"
+  if [[ $_quiet -eq 0 ]]
+  then
+    apt-get update 
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y $_packages
+  else
+    apt-get update -qq
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -qq $_packages &>/dev/null
+  fi
   systemctl stop smbd winbind nmbd
   # yeah... policy-rc.d
   for dir in $(smbd -b | egrep "LOCKDIR|STATEDIR|CACHEDIR|PRIVATE_DIR" | awk '{print $2}')
@@ -92,8 +115,8 @@ function init_me() {
     find $dir -type f -name "*.tdb" -delete
     find $dir -type f -name "*.ldb" -delete
   done
-  echo "Preserving distrubution config file /etc/samba/smb.conf -> /etc/samba/smb.conf.dist"
-  mv /etc/samba/smb.conf /etc/samba/smb.conf.dist
+  #echo "Preserving distrubution config file /etc/samba/smb.conf -> /etc/samba/smb.conf.dist"
+  mv -f /etc/samba/smb.conf /etc/samba/smb.conf.dist
   touch "$CONFIG_DIR/init"
 }
 
@@ -147,10 +170,6 @@ local _save_short=0
     fi
   fi
   echo "DOMAIN: $ad_domain / $ad_short_domain"
-}
-
-function setNameservers() {
-  :
 }
 
 function domainName() {
@@ -360,11 +379,40 @@ local ad_domain _r
   if [[ -z $_r ]]
   then
     echo "DNS doesn't work properly on this host for AD domain."
-    echo "Please run:"
-    echo -e "\tesmb set-resolver DCNS1:DCNS2:NS1...:NSN"
-    echo -e "\n\tWhere DCNS1, DCNS2 are DNS servers for AD domain"
+    echo -e "Please run:\n"
+    echo -e "\tesmb set-resolver DCNS1 DCNS2 NS1 ... NSN"
+    echo -e "\n\tWhere DCNS1, DCNS2 are DNS servers (IP addresses) for AD domain"
+    exit 1
   fi
+  echo "DNS looks OK!"
 }
+
+function setResolver() {
+local _ns NS
+  ad_domain="$(domainName)"
+  ad_domain="${ad_domain,,}"
+  for _ns in "$@"
+  do
+    _ns=$(trimVar "$_ns")
+    if ! is_ip $_ns
+    then
+      fatal_error "$_ns is not an IP address"
+    fi
+  done
+  # systemd knows better - I don't so... I will deal with this someday
+  systemctl disable --now systemd-resolved
+  if [[ -f /etc/resolv.conf ]]
+  then
+    rm -f /etc/resolv.conf
+  fi
+  echo "search ${ad_domain}" >/etc/resolv.conf
+  for _ns in "$@"
+  do
+    _ns=$(trimVar "$_ns")
+    echo "nameserver $_ns" >>/etc/resolv.conf
+  done
+}
+
 
 function joinDomain() {
   net ads join -U administrator
@@ -426,13 +474,19 @@ function addShare() {
 cmd="$1"
 case $cmd in
   init)
+    shift
     checkHostname
-    init_me
+    checkResolver
+    init_me "$@"
     ;;
   checkHostname|check-hostname)
     checkHostname
     ;;
   checkResolver|check-resolver)
+    checkResolver
+    ;;
+  check)
+    checkHostname
     checkResolver
     ;;
   configure)
@@ -442,6 +496,10 @@ case $cmd in
   setDomain|set-domain)
     shift
     setDomain "$@"
+    ;;
+  setResolver|set-resolver)
+    shift
+    setResolver "$@"
     ;;
   joinDomain|join-domain)
     shift

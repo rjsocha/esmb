@@ -8,6 +8,12 @@ Example
 # set AD domain name
 esmb set-domain ad.nauka.ga
 
+# Setup correct DNS resolvers 
+esmb set-resolver <IPofDC> <IPofDC1> <IPofNS>
+
+# Check system current configuration
+esmb check
+
 # Prepare system (install required packages)
 esmb init
 
