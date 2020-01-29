@@ -7,3 +7,7 @@ deb/usr/sbin/esmb: smb.conf.template esmb.template deb/DEBIAN/control
 	@tail -n +11 esmb.template >>deb/usr/sbin/esmb
 	@chmod +x deb/usr/sbin/esmb
 	dpkg-deb --build deb dist
+
+install: deb/usr/sbin/esmb
+	cp deb/usr/sbin/esmb /usr/sbin
+
