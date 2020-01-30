@@ -65,7 +65,7 @@ then
 fi
 
 function showUsage() {
-  echo "esmb set-domain <domain_name> | set-nameservers <ns1:ns2:..nsN> | init | configure [--force] | show-templates | check-hostname | join-domain | add-share"
+  echo "esmb set-domain <domain_name> | set-nameservers <ns1:ns2:..nsN> | init | configure [--force] | show-templates | check-hostname | join-domain | add-share | zfs-support"
 }
 
 function init_me() {
@@ -507,7 +507,7 @@ local _opt
     zfs create $_zfspool/$_zfsvolume
     zfs set compression=off $_zfspool/$_zfsvolume
     zfs set xattr=sa $_zfspool/$_zfsvolume
-    #zfs set acltype=posixacl $_zfspool/$_zfsvolume
+    zfs set acltype=posixacl $_zfspool/$_zfsvolume
     if [[ $_zfs_shadow -eq 1 ]]
     then
       zfs set com.sun:auto-snapshot=true $_zfspool/$_zfsvolume
@@ -517,6 +517,8 @@ local _opt
     then
       fatal_error "Unable to find mountpoint for volume \"$_zfspool/$_zfsvolume\""
     fi
+    mkdir -m 777 ${share_path}/share
+    share_path="${share_path}/share"
   fi
   share_template="[$share]\n"
   share_template+="\tpath = $share_path\n"
@@ -528,7 +530,7 @@ local _opt
   share_template+="\tforce create mode = 0666\n"
   if [[ $_zfs_shadow -eq 1 ]]
   then
-    share_template+="\tvfs objects = shadow_copy2\n"
+    share_template+="\tvfs objects = shadow_copy2 acl_xattr\n"
     share_template+="\tshadow: snapdir = .zfs/snapshot\n"
     share_template+="\tshadow: sort = desc\n"
     share_template+="\tshadow: format = - %%Y-%%m-%%d-%%H%%M\n"
@@ -543,6 +545,9 @@ local _opt
   fi
   chmod 0777 "${share_path}"
   generateShares
+  #dirtyHack Everyone - FULL CONTROL
+  setfattr -n security.NTACL -v "0sAwADAAAAAgAEAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAScZAAAAHQAAAAAAAAAhAAAAAECAAAAAAAWAQAAAAAAAAABAgAAAAAAFgIAAAAAAAAAAgAcAAEAAAAAAxQA/wEfAAEBAAAAAAABAAAAAA==" "${share_path}"
+  echo "Status: OK"
 }
 
 cmd="$1"

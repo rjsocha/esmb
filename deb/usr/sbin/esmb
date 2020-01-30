@@ -8,7 +8,7 @@
 #
 #
 # DO NOT REMOVE THIS LINES ABOVE
-SMB_CONF_TEMPLATE="I0VTTUIKW2dsb2JhbF0KICAgd29ya2dyb3VwID0ge0RPTUFJTl9TSE9SVH0KICAgc2VjdXJpdHkgPSBBRFMKICAgcmVhbG0gPSB7RE9NQUlOfQoKICAgd2luYmluZCByZWZyZXNoIHRpY2tldHMgPSBZZXMKICAgdmZzIG9iamVjdHMgPSBhY2xfeGF0dHIKICAgbWFwIGFjbCBpbmhlcml0ID0gWWVzCiAgIHN0b3JlIGRvcyBhdHRyaWJ1dGVzID0gWWVzCiAgIGFjbF94YXR0cjppZ25vcmUgc3lzdGVtIGFjbHMgPSB5ZXMKICAgYWNsX3hhdHRyOmRlZmF1bHQgYWNsIHN0eWxlID0gd2luZG93cwogICB1bml4IGV4dGVuc2lvbnMgPSBubwoKICAgZGVkaWNhdGVkIGtleXRhYiBmaWxlID0gL2V0Yy9rcmI1LmtleXRhYgogICBrZXJiZXJvcyBtZXRob2QgPSBzZWNyZXRzIGFuZCBrZXl0YWIKCiAgIHdpbmJpbmQgdXNlIGRlZmF1bHQgZG9tYWluID0geWVzCgogICAjd2luYmluZCBlbnVtIHVzZXJzID0geWVzCiAgICN3aW5iaW5kIGVudW0gZ3JvdXBzID0geWVzCgogICBsb2FkIHByaW50ZXJzID0gbm8KICAgcHJpbnRpbmcgPSBic2QKICAgcHJpbnRjYXAgbmFtZSA9IC9kZXYvbnVsbAogICBkaXNhYmxlIHNwb29sc3MgPSB5ZXMKCiAgIGlkbWFwIGNvbmZpZyAqIDogYmFja2VuZCA9IHRkYgogICBpZG1hcCBjb25maWcgKiA6IHJhbmdlID0gMzAwMC03OTk5CgogICBpZG1hcCBjb25maWcge0RPTUFJTl9TSE9SVH0gOiBiYWNrZW5kID0gcmlkCiAgIGlkbWFwIGNvbmZpZyB7RE9NQUlOX1NIT1JUfSA6IHJhbmdlID0gMTAwMDAtOTk5OTk5CgogICB0ZW1wbGF0ZSBzaGVsbCA9IC9iaW4vZmFsc2UKICAgdGVtcGxhdGUgaG9tZWRpciA9IC9kZXYvbnVsbAoKICAgdXNlcm5hbWUgbWFwID0gL2V0Yy9zYW1iYS9hZG1pbmlzdHJhdG9yLm1hcAogICBzZXJ2ZXIgc3RyaW5nID0gJWggU2FtYmEKICAgZG5zIHByb3h5ID0gbm8KICAgbG9nIGZpbGUgPSAvdmFyL2xvZy9zYW1iYS9sb2cuJW0KICAgbWF4IGxvZyBzaXplID0gMTAwMAogICBwYW5pYyBhY3Rpb24gPSAvdXNyL3NoYXJlL3NhbWJhL3BhbmljLWFjdGlvbiAlZAogICBzZXJ2ZXIgcm9sZSA9IHN0YW5kYWxvbmUgc2VydmVyCiAgIHBhc3NkYiBiYWNrZW5kID0gdGRic2FtCiAgIG9iZXkgcGFtIHJlc3RyaWN0aW9ucyA9IG5vCiAgIHVuaXggcGFzc3dvcmQgc3luYyA9IG5vCiAgIHBhbSBwYXNzd29yZCBjaGFuZ2UgPSBubwogICBtYXAgdG8gZ3Vlc3QgPSBiYWQgdXNlcgogICB1c2Vyc2hhcmUgbWF4IHNoYXJlcyA9IDAKCiAgIGluY2x1ZGUgPSAvZXRjL3NhbWJhL3NoYXJlcy5jb25mCg=="
+SMB_CONF_TEMPLATE="I0VTTUIKW2dsb2JhbF0KICAgd29ya2dyb3VwID0ge0RPTUFJTl9TSE9SVH0KICAgc2VjdXJpdHkgPSBBRFMKICAgcmVhbG0gPSB7RE9NQUlOfQoKICAgd2luYmluZCByZWZyZXNoIHRpY2tldHMgPSBZZXMKICAgdmZzIG9iamVjdHMgPSBhY2xfeGF0dHIKICAgbWFwIGFjbCBpbmhlcml0ID0gWWVzCiAgIHN0b3JlIGRvcyBhdHRyaWJ1dGVzID0gWWVzCiAgIGFjbF94YXR0cjppZ25vcmUgc3lzdGVtIGFjbHMgPSB5ZXMKICAgYWNsX3hhdHRyOmRlZmF1bHQgYWNsIHN0eWxlID0gZXZlcnlvbmUKCiAgIGRlZGljYXRlZCBrZXl0YWIgZmlsZSA9IC9ldGMva3JiNS5rZXl0YWIKICAga2VyYmVyb3MgbWV0aG9kID0gc2VjcmV0cyBhbmQga2V5dGFiCgogICB3aW5iaW5kIHVzZSBkZWZhdWx0IGRvbWFpbiA9IHllcwoKICAgI3dpbmJpbmQgZW51bSB1c2VycyA9IHllcwogICAjd2luYmluZCBlbnVtIGdyb3VwcyA9IHllcwoKICAgbG9hZCBwcmludGVycyA9IG5vCiAgIHByaW50aW5nID0gYnNkCiAgIHByaW50Y2FwIG5hbWUgPSAvZGV2L251bGwKICAgZGlzYWJsZSBzcG9vbHNzID0geWVzCgogICBpZG1hcCBjb25maWcgKiA6IGJhY2tlbmQgPSB0ZGIKICAgaWRtYXAgY29uZmlnICogOiByYW5nZSA9IDMwMDAtNzk5OQoKICAgaWRtYXAgY29uZmlnIHtET01BSU5fU0hPUlR9IDogYmFja2VuZCA9IHJpZAogICBpZG1hcCBjb25maWcge0RPTUFJTl9TSE9SVH0gOiByYW5nZSA9IDEwMDAwLTk5OTk5OQoKICAgdGVtcGxhdGUgc2hlbGwgPSAvYmluL2ZhbHNlCiAgIHRlbXBsYXRlIGhvbWVkaXIgPSAvZGV2L251bGwKCiAgIHVzZXJuYW1lIG1hcCA9IC9ldGMvc2FtYmEvYWRtaW5pc3RyYXRvci5tYXAKICAgc2VydmVyIHN0cmluZyA9ICVoIFNhbWJhCiAgIGRucyBwcm94eSA9IG5vCiAgIGxvZyBmaWxlID0gL3Zhci9sb2cvc2FtYmEvbG9nLiVtCiAgIG1heCBsb2cgc2l6ZSA9IDEwMDAKICAgcGFuaWMgYWN0aW9uID0gL3Vzci9zaGFyZS9zYW1iYS9wYW5pYy1hY3Rpb24gJWQKICAgc2VydmVyIHJvbGUgPSBzdGFuZGFsb25lIHNlcnZlcgogICBwYXNzZGIgYmFja2VuZCA9IHRkYnNhbQogICBvYmV5IHBhbSByZXN0cmljdGlvbnMgPSBubwogICB1bml4IGV4dGVuc2lvbnMgPSBubwogICB1bml4IHBhc3N3b3JkIHN5bmMgPSBubwogICBwYW0gcGFzc3dvcmQgY2hhbmdlID0gbm8KICAgbWFwIHRvIGd1ZXN0ID0gYmFkIHVzZXIKICAgdXNlcnNoYXJlIG1heCBzaGFyZXMgPSAwCgogICBpbmNsdWRlID0gL2V0Yy9zYW1iYS9zaGFyZXMuY29uZgo="
 KRB5_CONF_TEMPLATE="I0VTTUIKW2xpYmRlZmF1bHRzXQogICAgZG5zX2xvb2t1cF9yZWFsbSA9IGZhbHNlCiAgICBkbnNfbG9va3VwX2tkYyA9IHRydWUKICAgIGRlZmF1bHRfcmVhbG0gPSB7RE9NQUlOfQo="
 # Be safe
 set -e
@@ -67,7 +67,7 @@ then
 fi
 
 function showUsage() {
-  echo "esmb set-domain <domain_name> | set-nameservers <ns1:ns2:..nsN> | init | configure [--force] | show-templates | check-hostname | join-domain | add-share"
+  echo "esmb set-domain <domain_name> | set-nameservers <ns1:ns2:..nsN> | init | configure [--force] | show-templates | check-hostname | join-domain | add-share | zfs-support"
 }
 
 function init_me() {
@@ -509,7 +509,7 @@ local _opt
     zfs create $_zfspool/$_zfsvolume
     zfs set compression=off $_zfspool/$_zfsvolume
     zfs set xattr=sa $_zfspool/$_zfsvolume
-    #zfs set acltype=posixacl $_zfspool/$_zfsvolume
+    zfs set acltype=posixacl $_zfspool/$_zfsvolume
     if [[ $_zfs_shadow -eq 1 ]]
     then
       zfs set com.sun:auto-snapshot=true $_zfspool/$_zfsvolume
@@ -519,6 +519,8 @@ local _opt
     then
       fatal_error "Unable to find mountpoint for volume \"$_zfspool/$_zfsvolume\""
     fi
+    mkdir -m 777 ${share_path}/share
+    share_path="${share_path}/share"
   fi
   share_template="[$share]\n"
   share_template+="\tpath = $share_path\n"
@@ -530,7 +532,7 @@ local _opt
   share_template+="\tforce create mode = 0666\n"
   if [[ $_zfs_shadow -eq 1 ]]
   then
-    share_template+="\tvfs objects = shadow_copy2\n"
+    share_template+="\tvfs objects = shadow_copy2 acl_xattr\n"
     share_template+="\tshadow: snapdir = .zfs/snapshot\n"
     share_template+="\tshadow: sort = desc\n"
     share_template+="\tshadow: format = - %%Y-%%m-%%d-%%H%%M\n"
@@ -545,6 +547,9 @@ local _opt
   fi
   chmod 0777 "${share_path}"
   generateShares
+  #dirtyHack Everyone - FULL CONTROL
+  setfattr -n security.NTACL -v "0sAwADAAAAAgAEAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAScZAAAAHQAAAAAAAAAhAAAAAECAAAAAAAWAQAAAAAAAAABAgAAAAAAFgIAAAAAAAAAAgAcAAEAAAAAAxQA/wEfAAEBAAAAAAABAAAAAA==" "${share_path}"
+  echo "Status: OK"
 }
 
 cmd="$1"
