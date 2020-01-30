@@ -9,7 +9,7 @@
    map acl inherit = Yes
    store dos attributes = Yes
    acl_xattr:ignore system acls = yes
-   acl_xattr:default acl style = everyone
+   acl_xattr:default acl style = windows
 
    dedicated keytab file = /etc/krb5.keytab
    kerberos method = secrets and keytab
