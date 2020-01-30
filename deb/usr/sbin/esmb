@@ -526,8 +526,8 @@ local _opt
   share_template+="\tpath = $share_path\n"
   share_template+="\tread only = no\n"
   share_template+="\tbrowsable = yes\n"
-  share_template+="\tdirectory mask = 0000\n"
-  share_template+="\tcreate mask = 0000\n"
+  share_template+="\tdirectory mask = 0777\n"
+  share_template+="\tcreate mask = 0666\n"
   share_template+="\tforce directory mode = 0777\n"
   share_template+="\tforce create mode = 0666\n"
   if [[ $_zfs_shadow -eq 1 ]]
@@ -547,6 +547,7 @@ local _opt
   fi
   chmod 0777 "${share_path}"
   generateShares
+  # Samba crashes too often with acl type set to everyone
   #dirtyHack Everyone - FULL CONTROL
   setfattr -n security.NTACL -v "0sAwADAAAAAgAEAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAScZAAAAHQAAAAAAAAAhAAAAAECAAAAAAAWAQAAAAAAAAABAgAAAAAAFgIAAAAAAAAAAgAcAAEAAAAAAxQA/wEfAAEBAAAAAAABAAAAAA==" "${share_path}"
   echo "Status: OK"
