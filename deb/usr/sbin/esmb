@@ -8,7 +8,7 @@
 #
 #
 # DO NOT REMOVE THIS LINES ABOVE
-SMB_CONF_TEMPLATE="I0VTTUIKW2dsb2JhbF0KICAgd29ya2dyb3VwID0ge0RPTUFJTl9TSE9SVH0KICAgc2VjdXJpdHkgPSBBRFMKICAgcmVhbG0gPSB7RE9NQUlOfQoKICAgd2luYmluZCByZWZyZXNoIHRpY2tldHMgPSBZZXMKICAgdmZzIG9iamVjdHMgPSBhY2xfeGF0dHIKICAgbWFwIGFjbCBpbmhlcml0ID0gWWVzCiAgIHN0b3JlIGRvcyBhdHRyaWJ1dGVzID0gWWVzCgogICBkZWRpY2F0ZWQga2V5dGFiIGZpbGUgPSAvZXRjL2tyYjUua2V5dGFiCiAgIGtlcmJlcm9zIG1ldGhvZCA9IHNlY3JldHMgYW5kIGtleXRhYgoKICAgd2luYmluZCB1c2UgZGVmYXVsdCBkb21haW4gPSB5ZXMKCiAgICN3aW5iaW5kIGVudW0gdXNlcnMgPSB5ZXMKICAgI3dpbmJpbmQgZW51bSBncm91cHMgPSB5ZXMKCiAgIGxvYWQgcHJpbnRlcnMgPSBubwogICBwcmludGluZyA9IGJzZAogICBwcmludGNhcCBuYW1lID0gL2Rldi9udWxsCiAgIGRpc2FibGUgc3Bvb2xzcyA9IHllcwoKICAgaWRtYXAgY29uZmlnICogOiBiYWNrZW5kID0gdGRiCiAgIGlkbWFwIGNvbmZpZyAqIDogcmFuZ2UgPSAzMDAwLTc5OTkKCiAgIGlkbWFwIGNvbmZpZyB7RE9NQUlOX1NIT1JUfSA6IGJhY2tlbmQgPSByaWQKICAgaWRtYXAgY29uZmlnIHtET01BSU5fU0hPUlR9IDogcmFuZ2UgPSAxMDAwMC05OTk5OTkKCiAgIHRlbXBsYXRlIHNoZWxsID0gL2Jpbi9mYWxzZQogICB0ZW1wbGF0ZSBob21lZGlyID0gL2Rldi9udWxsCgogICB1c2VybmFtZSBtYXAgPSAvZXRjL3NhbWJhL2FkbWluaXN0cmF0b3IubWFwCiAgIHNlcnZlciBzdHJpbmcgPSAlaCBzZXJ2ZXIgKFNhbWJhKQogICBkbnMgcHJveHkgPSBubwogICBsb2cgZmlsZSA9IC92YXIvbG9nL3NhbWJhL2xvZy4lbQogICBtYXggbG9nIHNpemUgPSAxMDAwCiAgIHBhbmljIGFjdGlvbiA9IC91c3Ivc2hhcmUvc2FtYmEvcGFuaWMtYWN0aW9uICVkCiAgIHNlcnZlciByb2xlID0gc3RhbmRhbG9uZSBzZXJ2ZXIKICAgcGFzc2RiIGJhY2tlbmQgPSB0ZGJzYW0KICAgb2JleSBwYW0gcmVzdHJpY3Rpb25zID0geWVzCiAgIHVuaXggcGFzc3dvcmQgc3luYyA9IG5vCiAgIHBhbSBwYXNzd29yZCBjaGFuZ2UgPSBubwogICBtYXAgdG8gZ3Vlc3QgPSBiYWQgdXNlcgogICB1c2Vyc2hhcmUgbWF4IHNoYXJlcyA9IDAKCiAgIGluY2x1ZGUgPSAvZXRjL3NhbWJhL3NoYXJlcy5jb25mCg=="
+SMB_CONF_TEMPLATE="I0VTTUIKW2dsb2JhbF0KICAgd29ya2dyb3VwID0ge0RPTUFJTl9TSE9SVH0KICAgc2VjdXJpdHkgPSBBRFMKICAgcmVhbG0gPSB7RE9NQUlOfQoKICAgd2luYmluZCByZWZyZXNoIHRpY2tldHMgPSBZZXMKICAgdmZzIG9iamVjdHMgPSBhY2xfeGF0dHIKICAgbWFwIGFjbCBpbmhlcml0ID0gWWVzCiAgIHN0b3JlIGRvcyBhdHRyaWJ1dGVzID0gWWVzCiAgIGFjbF94YXR0cjppZ25vcmUgc3lzdGVtIGFjbHMgPSB5ZXMKICAgYWNsX3hhdHRyOmRlZmF1bHQgYWNsIHN0eWxlID0gd2luZG93cwoKICAgZGVkaWNhdGVkIGtleXRhYiBmaWxlID0gL2V0Yy9rcmI1LmtleXRhYgogICBrZXJiZXJvcyBtZXRob2QgPSBzZWNyZXRzIGFuZCBrZXl0YWIKCiAgIHdpbmJpbmQgdXNlIGRlZmF1bHQgZG9tYWluID0geWVzCgogICAjd2luYmluZCBlbnVtIHVzZXJzID0geWVzCiAgICN3aW5iaW5kIGVudW0gZ3JvdXBzID0geWVzCgogICBsb2FkIHByaW50ZXJzID0gbm8KICAgcHJpbnRpbmcgPSBic2QKICAgcHJpbnRjYXAgbmFtZSA9IC9kZXYvbnVsbAogICBkaXNhYmxlIHNwb29sc3MgPSB5ZXMKCiAgIGlkbWFwIGNvbmZpZyAqIDogYmFja2VuZCA9IHRkYgogICBpZG1hcCBjb25maWcgKiA6IHJhbmdlID0gMzAwMC03OTk5CgogICBpZG1hcCBjb25maWcge0RPTUFJTl9TSE9SVH0gOiBiYWNrZW5kID0gcmlkCiAgIGlkbWFwIGNvbmZpZyB7RE9NQUlOX1NIT1JUfSA6IHJhbmdlID0gMTAwMDAtOTk5OTk5CgogICB0ZW1wbGF0ZSBzaGVsbCA9IC9iaW4vZmFsc2UKICAgdGVtcGxhdGUgaG9tZWRpciA9IC9kZXYvbnVsbAoKICAgdXNlcm5hbWUgbWFwID0gL2V0Yy9zYW1iYS9hZG1pbmlzdHJhdG9yLm1hcAogICBzZXJ2ZXIgc3RyaW5nID0gJWggc2VydmVyIChTYW1iYSkKICAgZG5zIHByb3h5ID0gbm8KICAgbG9nIGZpbGUgPSAvdmFyL2xvZy9zYW1iYS9sb2cuJW0KICAgbWF4IGxvZyBzaXplID0gMTAwMAogICBwYW5pYyBhY3Rpb24gPSAvdXNyL3NoYXJlL3NhbWJhL3BhbmljLWFjdGlvbiAlZAogICBzZXJ2ZXIgcm9sZSA9IHN0YW5kYWxvbmUgc2VydmVyCiAgIHBhc3NkYiBiYWNrZW5kID0gdGRic2FtCiAgIG9iZXkgcGFtIHJlc3RyaWN0aW9ucyA9IHllcwogICB1bml4IHBhc3N3b3JkIHN5bmMgPSBubwogICBwYW0gcGFzc3dvcmQgY2hhbmdlID0gbm8KICAgbWFwIHRvIGd1ZXN0ID0gYmFkIHVzZXIKICAgdXNlcnNoYXJlIG1heCBzaGFyZXMgPSAwCgogICBpbmNsdWRlID0gL2V0Yy9zYW1iYS9zaGFyZXMuY29uZgo="
 KRB5_CONF_TEMPLATE="I0VTTUIKW2xpYmRlZmF1bHRzXQogICAgZG5zX2xvb2t1cF9yZWFsbSA9IGZhbHNlCiAgICBkbnNfbG9va3VwX2tkYyA9IHRydWUKICAgIGRlZmF1bHRfcmVhbG0gPSB7RE9NQUlOfQo="
 # Be safe
 set -e
@@ -433,40 +433,107 @@ function generateShares() {
   fi
 }
 function addShare() {
+local _opt
   if [[ ! -f $CONFIG_DIR/joined ]]
   then
     echo "This system is not ready!"
     exit 1
   fi
-        if [[ $# -ne 2 ]]
-        then
-                echo "error: addShare <share-name> <directory>"
-                exit 1
-        fi
-        if ! [[ $1 =~ ^[a-zA-Z][a-zA-Z0-9]+$ ]]
-        then
-                echo "Share name can be [a-z][a-z0-9]+"
-                exit 1
-        fi
-        share="${1,,}"
-        share_path="$2"
+  if [[ $# -lt 2 ]]
+  then
+    echo "error: addShare <share-name> <directory|zfs-volume> <options>"
+    exit 1
+  fi
+  if ! [[ $1 =~ ^[a-zA-Z][a-zA-Z0-9_-]+$ ]]
+  then
+     echo "Share name can be [a-z][a-z0-9_-]+"
+     exit 1
+  fi
+  share="${1,,}"
+  share_path="$2"
+  shift 2
+  _zfs_mode=0
+  _zfs_shadow=0
+  _zfs_create_volume=0
+  while [[ $# -gt 0 ]]
+  do
+    _opt="${1#+}"
+    case $_opt in
+      zfs-shadow-copy)
+        _zfs_shadow=1
+        _zfs_mode=1
+        ;;
+      zfs-create-volume)
+        _zfs_mode=1
+        _zfs_create_volume=1
+        ;;
+      *)
+        fatal_error "Unknow option: $_opt"
+    esac
+    shift
+  done
   if [[ -f /etc/samba/share.d/$share.conf ]]
   then
-    echo "Share already definied!"
+    echo "Share is already definied!"
     exit 1
+  fi
+  if [[ $_zfs_mode -eq 1 ]]
+  then
+    if ! command -v zpool &>/dev/null || ! command -v zfs &>/dev/null
+    then
+      fatal_error "Missing zfspool/zfs commands!"
+    fi
+  fi
+  if [[ $_zfs_create_volume -eq 1 ]]
+  then
+    if [[ ! $share_path =~ ^[A-Za-z][a-zA-Z0-9]*/[A-Za-z0-9_-]*[A-Za-z0-9]$ ]]
+    then
+      fatal_error "ZFS volume name syntax error: zpool/volume expected"
+    fi
+    _zfspool="${share_path%/*}"
+    _zfsvolume="${share_path#*/}"
+    if ! zpool list -H -o name "$_zfspool" &>/dev/null
+    then
+      fatal_error "ZFS pool \"$_zfspool\" doesn't exist!"
+    fi
+    if zfs list -H -o name $_zfspool/$_zfsvolume &>/dev/null
+    then
+      fatal_error "ZFS volume \"$_zfspool/$_zfsvolume\" already exist!"
+    fi
+    zfs create $_zfspool/$_zfsvolume
+    zfs set compression=off $_zfspool/$_zfsvolume
+    zfs set xattr=sa $_zfspool/$_zfsvolume
+    zfs set acltype=posixacl $_zfspool/$_zfsvolume
+    if [[ $_zfs_shadow -eq 1 ]]
+    then
+      zfs set com.sun:auto-snapshot=true $_zfspool/$_zfsvolume
+      zfs set snapdir=hidden $_zfspool/$_zfsvolume
+    fi
+    if ! share_path=$(zfs list -H -o mountpoint $_zfspool/$_zfsvolume) 
+    then
+      fatal_error "Unable to find mountpoint for volume \"$_zfspool/$_zfsvolume\""
+    fi
   fi
   share_template="[$share]\n"
   share_template+="\tpath = $share_path\n"
   share_template+="\tread only = no\n"
   share_template+="\tbrowsable = yes\n"
-  share_template+="\tforce directory mode = 2770\n"
-  share_template+="\tforce create mode = 0664\n"
-        echo "Adding share ${share} : ${share_path}"
+  share_template+="\tforce directory mode = 0777\n"
+  share_template+="\tforce create mode = 0666\n"
+  if [[ $_zfs_shadow -eq 1 ]]
+  then
+  	share_template+="\tvfs objects = shadow_copy2\n"
+    share_template+="\tshadow: snapdir = .zfs/snapshot\n"
+    share_template+="\tshadow: sort = desc\n"
+    share_template+="\tshadow: format = - %%Y-%%m-%%d-%%H%%M\n"
+    share_template+="\tshadow: snapprefix = ^zfs-auto-snap_\\(frequent\\)\\{0,1\\}\\(hourly\\)\\{0,1\\}\\(daily\\)\\{0,1\\}\\(monthly\\)\\{0,1\\}\n"
+    share_template+="\tshadow: delimiter = -20\n"
+  fi
+  echo "Adding share ${share} : ${share_path}"
   printf "${share_template}" >/etc/samba/share.d/$share.conf
   if [[ ! -d $share_path ]]
   then
-    mkdir -m 2770 -p "${share_path}"
-    chown root:"domain admins" "${share_path}"
+    mkdir -m 777 -p "${share_path}"
   fi
   generateShares
 }
