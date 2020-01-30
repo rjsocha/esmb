@@ -9,8 +9,7 @@
    map acl inherit = Yes
    store dos attributes = Yes
    acl_xattr:ignore system acls = yes
-   acl_xattr:default acl style = windows
-   unix extensions = no
+   acl_xattr:default acl style = everyone
 
    dedicated keytab file = /etc/krb5.keytab
    kerberos method = secrets and keytab
@@ -43,6 +42,7 @@
    server role = standalone server
    passdb backend = tdbsam
    obey pam restrictions = no
+   unix extensions = no
    unix password sync = no
    pam password change = no
    map to guest = bad user
