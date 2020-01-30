@@ -105,7 +105,7 @@ local _quiet=0 _force=0 _packages
     apt-get update -qq
     DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -qq $_packages &>/dev/null
   fi
-  systemctl stop smbd winbind nmbd
+  systemctl disable --now smbd winbind nmbd
   # yeah... policy-rc.d
   for dir in $(smbd -b | egrep "LOCKDIR|STATEDIR|CACHEDIR|PRIVATE_DIR" | awk '{print $2}')
   do
@@ -236,7 +236,7 @@ local _check=0 _check1 _check2
   then
     mkdir /etc/samba/share.d
   fi
-  echo "!root = ${ad_short_domain}\Administrator" >/etc/samba/administrator.map
+  echo "!root = ${ad_short_domain}\Administrator ${ad_short_domain}\administrator" >/etc/samba/administrator.map
   # configure /etc/nsswitch
   if ! egrep ^passwd: /etc/nsswitch.conf | grep -q winbind
   then
@@ -414,9 +414,15 @@ local _ns NS
 
 function joinDomain() {
   net ads join -U administrator
-  systemctl start smbd winbind nmbd
+  systemctl enable --now smbd winbind nmbd
   wbinfo --ping-dc
   touch "$CONFIG_DIR/joined"
+}
+
+function enableZFSShadow() {
+	apt-get update -qq
+	apt-get install -qq zfsutils-linux zfs-auto-snapshot &>/dev/null
+	echo "ZFS support enabled."
 }
 
 function generateShares() {
@@ -457,11 +463,11 @@ local _opt
   do
     _opt="${1#+}"
     case $_opt in
-      zfs-shadow-copy)
+      zfs-shadow-copy|shadow-copy|shadow)
         _zfs_shadow=1
         _zfs_mode=1
         ;;
-      zfs-create-volume)
+      zfs-create-volume|create-volume|create)
         _zfs_mode=1
         _zfs_create_volume=1
         ;;
@@ -516,11 +522,13 @@ local _opt
   share_template+="\tpath = $share_path\n"
   share_template+="\tread only = no\n"
   share_template+="\tbrowsable = yes\n"
+  share_template+="\tdirectory mask = 0000\n"
+  share_template+="\tcreate mask = 0000\n"
   share_template+="\tforce directory mode = 0777\n"
   share_template+="\tforce create mode = 0666\n"
   if [[ $_zfs_shadow -eq 1 ]]
   then
-  	share_template+="\tvfs objects = shadow_copy2\n"
+    share_template+="\tvfs objects = shadow_copy2\n"
     share_template+="\tshadow: snapdir = .zfs/snapshot\n"
     share_template+="\tshadow: sort = desc\n"
     share_template+="\tshadow: format = - %%Y-%%m-%%d-%%H%%M\n"
@@ -533,6 +541,7 @@ local _opt
   then
     mkdir -m 777 -p "${share_path}"
   fi
+  chmod 0777 "${share_path}"
   generateShares
 }
 
@@ -573,6 +582,9 @@ case $cmd in
   addShare|add-share) 
     shift
     addShare "$@"
+    ;;
+  enable-zfs-support|enable-zfs-shadow-support|zfs-support)
+    enableZFSShadow
     ;;
   showTemplates|show-templates)
     showTemplates

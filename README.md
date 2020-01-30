@@ -14,6 +14,9 @@ esmb set-resolver <IPofDC> <IPofDC1> <IPofNS>
 # Check system current configuration
 esmb check
 
+#Enable ZFS for Shadow Copy (not mandatory)
+esmb zfs-support
+
 # Prepare system (install required packages)
 esmb init
 

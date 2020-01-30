@@ -10,6 +10,7 @@
    store dos attributes = Yes
    acl_xattr:ignore system acls = yes
    acl_xattr:default acl style = windows
+   unix extensions = no
 
    dedicated keytab file = /etc/krb5.keytab
    kerberos method = secrets and keytab
@@ -34,14 +35,14 @@
    template homedir = /dev/null
 
    username map = /etc/samba/administrator.map
-   server string = %h server (Samba)
+   server string = %h Samba
    dns proxy = no
    log file = /var/log/samba/log.%m
    max log size = 1000
    panic action = /usr/share/samba/panic-action %d
    server role = standalone server
    passdb backend = tdbsam
-   obey pam restrictions = yes
+   obey pam restrictions = no
    unix password sync = no
    pam password change = no
    map to guest = bad user
