@@ -501,7 +501,7 @@ local _opt
     zfs create $_zfspool/$_zfsvolume
     zfs set compression=off $_zfspool/$_zfsvolume
     zfs set xattr=sa $_zfspool/$_zfsvolume
-    zfs set acltype=posixacl $_zfspool/$_zfsvolume
+    #zfs set acltype=posixacl $_zfspool/$_zfsvolume
     if [[ $_zfs_shadow -eq 1 ]]
     then
       zfs set com.sun:auto-snapshot=true $_zfspool/$_zfsvolume
