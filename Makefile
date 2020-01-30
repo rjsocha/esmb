@@ -1,3 +1,4 @@
+# Simple make file
 all: deb/usr/sbin/esmb
 
 deb/usr/sbin/esmb: src/smb.conf.template src/esmb.template deb/DEBIAN/control

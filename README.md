@@ -1,7 +1,8 @@
 # esmb
 EasySMB - samba support tool
 
-This tool allow to prepare Ubuntu (tested only on 18.04 LTS) server for joining AD domain
+This tool allow to prepare Ubuntu (tested only on 18.04 LTS) server for joining AD domain.
+This is more for internal use than public...
 
 Example
 ```

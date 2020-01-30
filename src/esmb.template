@@ -3,7 +3,7 @@
 # Robert Socha 2020 - public domain
 # Simple tool to support samba AD operations
 # This tool assume full control of the Samba server
-#
+# Tested only on Ubuntu 18.04 LTS
 #
 #
 #
