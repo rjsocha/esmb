@@ -1,6 +1,12 @@
 # esmb
 EasySMB - samba support tool
 
+Tutorial: https://asciinema.org/a/297069
+
+
+Windows part: http://share.socha.it/github/esmb/
+
+
 This tool allow to prepare Ubuntu (tested only on 18.04 LTS) server for joining AD domain.
 This is more for internal use than public...
 
