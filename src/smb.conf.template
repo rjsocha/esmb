@@ -8,8 +8,6 @@
    vfs objects = acl_xattr
    map acl inherit = Yes
    store dos attributes = Yes
-   acl_xattr:ignore system acls = yes
-   acl_xattr:default acl style = windows
 
    dedicated keytab file = /etc/krb5.keytab
    kerberos method = secrets and keytab
@@ -40,7 +38,7 @@
    log file = /var/log/samba/log.%m
    max log size = 1000
    panic action = /usr/share/samba/panic-action %d
-   server role = standalone server
+   server role = member server
    passdb backend = tdbsam
    obey pam restrictions = no
    unix extensions = no

@@ -177,7 +177,7 @@ local ad_domain
     ad_domain=$(<"$CONFIG_DIR/domain")
   else
     echo "AD domain not configured!" >&2
-    echo "Run: esmb set-domain command" >&2
+    echo "Run: esmb set-domain <AD_DOMAIN>" >&2
     exit 1
   fi
   echo "$ad_domain"
@@ -438,14 +438,22 @@ function generateShares() {
 }
 function addShare() {
 local _opt
-  if [[ ! -f $CONFIG_DIR/joined ]]
+  _run=""
+  _dry_mode=0
+  if [[ "$1" == "-n" ]] || [[ "$1" == "--dry-run" ]]
   then
-    echo "This system is not ready!"
+    shift
+    _dry_mode=1
+    _run="echo"
+  fi
+  if [[ ! -f $CONFIG_DIR/joined ]] && [[ $_dry_mode -eq 0 ]]
+  then
+    echo "This system is not configured!"
     exit 1
   fi
   if [[ $# -lt 2 ]]
   then
-    echo "error: addShare <share-name> <directory|zfs-volume> <options>"
+    echo "error: addShare <share-name> <directory|zfs-volume> [+<zfs-create-volume|zfs-shadow-copy|system-acl|windows-acl>]"
     exit 1
   fi
   if ! [[ $1 =~ ^[a-zA-Z][a-zA-Z0-9_-]+$ ]]
@@ -459,6 +467,7 @@ local _opt
   _zfs_mode=0
   _zfs_shadow=0
   _zfs_create_volume=0
+  _ignore_system_acl=1
   while [[ $# -gt 0 ]]
   do
     _opt="${1#+}"
@@ -471,12 +480,18 @@ local _opt
         _zfs_mode=1
         _zfs_create_volume=1
         ;;
+      linux-acl|system-acl|acl)
+        _ignore_system_acl=0
+        ;;
+      windows-acl)
+        _ignore_system_acl=1
+        ;;
       *)
         fatal_error "Unknow option: $_opt"
     esac
     shift
   done
-  if [[ -f /etc/samba/share.d/$share.conf ]]
+  if [[ -f /etc/samba/share.d/$share.conf ]] && [[ $_dry_mode -eq 0 ]]
   then
     echo "Share is already definied!"
     exit 1
@@ -485,7 +500,10 @@ local _opt
   then
     if ! command -v zpool &>/dev/null || ! command -v zfs &>/dev/null
     then
-      fatal_error "Missing zfspool/zfs commands!"
+      if [[ $_dry_mode -eq 0 ]]
+      then
+        fatal_error "Missing zfspool/zfs commands!"
+      fi
     fi
   fi
   if [[ $_zfs_create_volume -eq 1 ]]
@@ -498,61 +516,108 @@ local _opt
     _zfsvolume="${share_path#*/}"
     if ! zpool list -H -o name "$_zfspool" &>/dev/null
     then
-      fatal_error "ZFS pool \"$_zfspool\" doesn't exist!"
+      if [[ $_dry_mode -eq 0 ]]
+      then
+        fatal_error "ZFS pool \"$_zfspool\" doesn't exist!"
+      fi
     fi
     if zfs list -H -o name $_zfspool/$_zfsvolume &>/dev/null
     then
-      fatal_error "ZFS volume \"$_zfspool/$_zfsvolume\" already exist!"
+      if [[ $_dry_mode -eq 0 ]]
+      then
+        fatal_error "ZFS volume \"$_zfspool/$_zfsvolume\" already exist!"
+      fi
     fi
-    zfs create $_zfspool/$_zfsvolume
-    zfs set compression=off $_zfspool/$_zfsvolume
-    zfs set xattr=sa $_zfspool/$_zfsvolume
-    zfs set acltype=posixacl $_zfspool/$_zfsvolume
+    $_run zfs create $_zfspool/$_zfsvolume
+    $_run zfs set compression=off $_zfspool/$_zfsvolume
+    $_run zfs set xattr=sa $_zfspool/$_zfsvolume
+    $_run zfs set acltype=posixacl $_zfspool/$_zfsvolume
     if [[ $_zfs_shadow -eq 1 ]]
     then
-      zfs set com.sun:auto-snapshot=true $_zfspool/$_zfsvolume
-      zfs set snapdir=hidden $_zfspool/$_zfsvolume
+      $_run zfs set com.sun:auto-snapshot=true $_zfspool/$_zfsvolume
+      $_run zfs set snapdir=hidden $_zfspool/$_zfsvolume
     fi
-    if ! share_path=$(zfs list -H -o mountpoint $_zfspool/$_zfsvolume) 
+    if [[ $_dry_mode -eq 0 ]]
     then
-      fatal_error "Unable to find mountpoint for volume \"$_zfspool/$_zfsvolume\""
+      if ! share_path=$(zfs list -H -o mountpoint $_zfspool/$_zfsvolume) 
+      then
+        fatal_error "Unable to find mountpoint for volume \"$_zfspool/$_zfsvolume\""
+      fi
+    else
+      share_path="/$_zfspool/$_zfsvolume"
     fi
-    mkdir -m 777 ${share_path}/share
     share_path="${share_path}/share"
+  else
+    # canonicalize share path
+    share_path=$(readlink -qmn "$share_path")
+  fi
+  _vfs="acl_xattr"
+  if [[ $_zfs_shadow -eq 1 ]]
+  then
+    _vfs+=" shadow_copy2"
   fi
   share_template="[$share]\n"
   share_template+="\tpath = $share_path\n"
   share_template+="\tread only = no\n"
   share_template+="\tbrowsable = yes\n"
-  share_template+="\tdirectory mask = 0777\n"
-  share_template+="\tcreate mask = 0666\n"
-  share_template+="\tforce directory mode = 0777\n"
-  share_template+="\tforce create mode = 0666\n"
+  share_template+="\tvfs objects = $_vfs\n"
+  share_template+="\tacl_xattr:default acl style = windows\n"
+  if [[ $_ignore_system_acl -eq 0 ]]
+  then
+    share_template+="\tacl_xattr:ignore system acls = no\n"
+    share_template+="\tdirectory mask = 0770\n"
+    share_template+="\tcreate mask = 0660\n"
+  else
+    share_template+="\tacl_xattr:ignore system acls = yes\n"
+    share_template+="\tdirectory mask = 0777\n"
+    share_template+="\tcreate mask = 0666\n"
+    share_template+="\tforce directory mode = 0777\n"
+    share_template+="\tforce create mode = 0666\n"
+  fi
   if [[ $_zfs_shadow -eq 1 ]]
   then
-    share_template+="\tvfs objects = shadow_copy2 acl_xattr\n"
-    share_template+="\tshadow: snapdir = .zfs/snapshot\n"
-    share_template+="\tshadow: sort = desc\n"
-    share_template+="\tshadow: format = - %%Y-%%m-%%d-%%H%%M\n"
-    share_template+="\tshadow: snapprefix = ^zfs-auto-snap_\\(frequent\\)\\{0,1\\}\\(hourly\\)\\{0,1\\}\\(daily\\)\\{0,1\\}\\(monthly\\)\\{0,1\\}\n"
-    share_template+="\tshadow: delimiter = -20\n"
+    share_template+="\tshadow:snapdir = .zfs/snapshot\n"
+    share_template+="\tshadow:sort = desc\n"
+    share_template+="\tshadow:format = - %%Y-%%m-%%d-%%H%%M\n"
+    share_template+="\tshadow:snapprefix = ^zfs-auto-snap_\\(frequent\\)\\{0,1\\}\\(hourly\\)\\{0,1\\}\\(daily\\)\\{0,1\\}\\(monthly\\)\\{0,1\\}\n"
+    share_template+="\tshadow:delimiter = -20\n"
+    share_template+="\tshadow:localtime = no\n"
   fi
-  echo "Adding share ${share} : ${share_path}"
-  printf "${share_template}" >/etc/samba/share.d/$share.conf
+
   if [[ ! -d $share_path ]]
   then
-    mkdir -m 777 -p "${share_path}"
+    _mode="777"
+    if [[ $_ignore_system_acl -eq 0 ]]
+    then
+      _mode="770"
+    fi
+    $_run mkdir -m $_mode ${share_path}
   fi
-  chmod 0777 "${share_path}"
-  generateShares
+  if [[ $_dry_mode -eq 0 ]]
+  then
+    echo "Adding share ${share} : ${share_path}"
+    printf "${share_template}" >/etc/samba/share.d/$share.conf
+    generateShares
+    echo "Status: OK"
+  else
+    echo -e "#SHARE"
+    printf "${share_template}" 
+  fi
   # Samba crashes too often with acl type set to everyone
   #dirtyHack Everyone - FULL CONTROL
-  setfattr -n security.NTACL -v "0sAwADAAAAAgAEAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAScZAAAAHQAAAAAAAAAhAAAAAECAAAAAAAWAQAAAAAAAAABAgAAAAAAFgIAAAAAAAAAAgAcAAEAAAAAAxQA/wEfAAEBAAAAAAABAAAAAA==" "${share_path}"
-  echo "Status: OK"
+  #setfattr -n security.NTACL -v "0sAwADAAAAAgAEAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAScZAAAAHQAAAAAAAAAhAAAAAECAAAAAAAWAQAAAAAAAAABAgAAAAAAFgIAAAAAAAAAAgAcAAEAAAAAAxQA/wEfAAEBAAAAAAABAAAAAA==" "${share_path}"
 }
 
 cmd="$1"
 case $cmd in
+  auto)
+    shift
+    checkHostname
+    checkResolver
+    enableZFSShadow
+    init_me -q
+    configure_me "$@"
+    ;;
   init)
     shift
     checkHostname
